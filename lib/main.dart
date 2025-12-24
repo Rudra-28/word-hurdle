@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wordle/Homepage.dart';
+import 'package:wordle/word_hurdlepage.dart';
 import 'package:wordle/hurdleprovider.dart';
 
 void main() {
