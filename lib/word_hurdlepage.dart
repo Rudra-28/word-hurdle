@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wordle/hurdleprovider.dart';
+import 'package:wordle/keyboard_view.dart';
 import 'package:wordle/wordle.dart';
+import 'package:wordle/wordle_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,22 +28,31 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           children: [
-            Consumer<HurdleProvider>(
-              builder: (context, provider, child) => GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
-                  mainAxisSpacing: 4,
-                  crossAxisSpacing: 4,
+            Expanded(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.70,
+
+                child: Consumer<HurdleProvider>(
+                  builder: (context, provider, child) => GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5,
+                      mainAxisSpacing: 4,
+                      crossAxisSpacing: 4,
+                    ),
+                    itemCount:  provider.hurldeBoard.length,
+                    itemBuilder: (context, index){
+                      //Object is created for hurdleBoard from the WordleView, 
+                      final wordle=provider.hurldeBoard[index];
+                      return WordleView(wordle: wordle);
+                    },
+                  ),
                 ),
-                itemCount:  provider.hurldeBoard.length,
-                itemBuilder: (context, index){
-                  final wordle=provider.hurldeBoard[index];
-                },
               ),
             ),
-          ],
+            KeyboardView(),
+          ], 
         ),
-      ),
+      ), 
     );
   }
 }
