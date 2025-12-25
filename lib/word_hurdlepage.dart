@@ -39,20 +39,25 @@ class _HomePageState extends State<HomePage> {
                       mainAxisSpacing: 4,
                       crossAxisSpacing: 4,
                     ),
-                    itemCount:  provider.hurldeBoard.length,
-                    itemBuilder: (context, index){
-                      //Object is created for hurdleBoard from the WordleView, 
-                      final wordle=provider.hurldeBoard[index];
+                    itemCount: provider.hurldeBoard.length,
+                    itemBuilder: (context, index) {
+                      //Object is created for hurdleBoard from the WordleView,
+                      final wordle = provider.hurldeBoard[index];
                       return WordleView(wordle: wordle);
                     },
                   ),
                 ),
               ),
             ),
-            KeyboardView(),
-          ], 
+            Consumer<HurdleProvider>(
+              builder: (context, provider, child) =>
+                  KeyboardView(onPressed: (value){
+                    print(value);
+                  } , excludedLetters: provider.excludedLetters),
+            ),
+          ],
         ),
-      ), 
+      ),
     );
   }
 }

@@ -7,7 +7,9 @@ const keyList = [
 ];
 
 class KeyboardView extends StatelessWidget {
-  const KeyboardView({super.key});
+  final Function(String) onPressed;
+  final List<String> excludedLetters;
+  const KeyboardView({super.key, required this.onPressed, required this.excludedLetters});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +18,20 @@ class KeyboardView extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            for (int i = 0; i <= keyList.length; i++)
-              Row(children: keyList[i].map((e) => VirtualKey(letter: e, excluded: false, onPress: (value){
-
-              })).toList()),
+            for (int i = 0; i < keyList.length; i++)
+              Row(
+                children: keyList[i]
+                    .map(
+                      (e) => VirtualKey(
+                        letter: e,
+                        excluded: excludedLetters.contains(e),
+                        onPress: (value) {
+                          onPressed:(value);
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
           ],
         ),
       ),
@@ -28,11 +40,15 @@ class KeyboardView extends StatelessWidget {
 }
 
 class VirtualKey extends StatelessWidget {
-
   final String letter;
   final bool excluded;
   final Function(String) onPress;
-  const VirtualKey({super.key, required this.letter, required this.excluded, required this.onPress});
+  const VirtualKey({
+    super.key,
+    required this.letter,
+    required this.excluded,
+    required this.onPress,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,11 +59,12 @@ class VirtualKey extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: EdgeInsets.zero,
         ),
-        onPressed: (){
+        onPressed: () {
           onPress(letter);
         },
         child: Text(letter),
-        ),
+      ),
     );
   }
 }
+ 
