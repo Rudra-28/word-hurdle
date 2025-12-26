@@ -28,9 +28,10 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           children: [
-            Expanded(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.70,
+            SizedBox(
+              height: 400,
+              width: MediaQuery.of(context).size.width * 0.70,
+              child: Container(
                 child: Consumer<HurdleProvider>(
                   builder: (context, provider, child) => GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -48,14 +49,37 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Expanded(
+            Container(
+              height: 200,
               child: Consumer<HurdleProvider>(
                 builder: (context, provider, child) => KeyboardView(
                   onPressed: (value) {
                     provider.inputLetter(value);
-                
                   },
                   excludedLetters: provider.excludedLetters,
+                ),
+              ),
+            ),
+            Container(
+              height: 200,
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Consumer<HurdleProvider>(
+                  builder: (context, provider, child) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(onPressed: (){
+                        provider.deleteLetter();
+                      }, child:const Text("DELETE")),
+                      ElevatedButton(onPressed: (){
+                        if(!provider.isAValidWord){
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Not a Word in my Dictionary")));
+                          return;
+                        }
+                      }, child:const Text("SUBMIT"))
+                    ],
+                  ),
                 ),
               ),
             ),

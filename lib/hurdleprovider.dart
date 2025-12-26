@@ -11,6 +11,7 @@ class HurdleProvider extends ChangeNotifier {
   List<Wordle> hurldeBoard = [];
   String targetWord = '';
   int count = 0;
+  int index=0;
   final lettersPerRow = 5;
   init() {
     //Retrieving words only with 5 characters
@@ -29,11 +30,29 @@ class HurdleProvider extends ChangeNotifier {
     print(targetWord);
   }
 
+  bool get isAValidWord => totalwords.contains(rowInputs.join('').toLowerCase());
+
+
   inputLetter(String letter) {
     if (count < lettersPerRow) {
       rowInputs.add(letter);
+      hurldeBoard[index]= Wordle(letter: letter);
+      index++;
       count++;
-      print(rowInputs);
+      notifyListeners();
     }
+  }
+
+  void deleteLetter(){
+    if(rowInputs.isNotEmpty){
+      rowInputs.removeAt(rowInputs.length-1);
+      //print(rowInputs); 
+    }
+    if(count>0){
+      hurldeBoard[index-1]=Wordle(letter: '');
+      count--;
+      index--;
+    }
+    notifyListeners();
   }
 }
