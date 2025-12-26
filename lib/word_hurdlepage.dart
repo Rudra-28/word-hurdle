@@ -31,7 +31,6 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.70,
-
                 child: Consumer<HurdleProvider>(
                   builder: (context, provider, child) => GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -49,11 +48,16 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Consumer<HurdleProvider>(
-              builder: (context, provider, child) =>
-                  KeyboardView(onPressed: (value){
-                    print(value);
-                  } , excludedLetters: provider.excludedLetters),
+            Expanded(
+              child: Consumer<HurdleProvider>(
+                builder: (context, provider, child) => KeyboardView(
+                  onPressed: (value) {
+                    provider.inputLetter(value);
+                
+                  },
+                  excludedLetters: provider.excludedLetters,
+                ),
+              ),
             ),
           ],
         ),

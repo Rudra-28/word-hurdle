@@ -25,9 +25,7 @@ class KeyboardView extends StatelessWidget {
                       (e) => VirtualKey(
                         letter: e,
                         excluded: excludedLetters.contains(e),
-                        onPress: (value) {
-                          onPressed:(value);
-                        },
+                        onPress: onPressed,
                       ),
                     )
                     .toList(),

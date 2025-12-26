@@ -3,28 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart' as words;
 import 'package:wordle/wordle.dart';
 
-class HurdleProvider extends ChangeNotifier{
-  final random=Random.secure();
-  List<String> totalwords=[];
-  List<String> rowInputs=[];
-  List<String> excludedLetters=[];
-  List<Wordle> hurldeBoard=[];
-  String targetWord='';
-
-  init(){
+class HurdleProvider extends ChangeNotifier {
+  final random = Random.secure();
+  List<String> totalwords = [];
+  List<String> rowInputs = [];
+  List<String> excludedLetters = [];
+  List<Wordle> hurldeBoard = [];
+  String targetWord = '';
+  int count = 0;
+  final lettersPerRow = 5;
+  init() {
     //Retrieving words only with 5 characters
-    totalwords=words.all.where((element) => element.length==5).toList();
+    totalwords = words.all.where((element) => element.length == 5).toList();
     generateBoard();
-    generateRandomWord();    
+    generateRandomWord();
   }
 
-  generateBoard(){
-    hurldeBoard=List.generate(30, (index)=>Wordle(letter: ''));
+  generateBoard() {
+    hurldeBoard = List.generate(30, (index) => Wordle(letter: ''));
   }
 
-  generateRandomWord(){
+  generateRandomWord() {
     //Here totalwords consist of the words with 5 letters but in List due to which they are serialized from 0 to MaxNumber.
-    targetWord=totalwords[random.nextInt(totalwords.length)].toUpperCase();
+    targetWord = totalwords[random.nextInt(totalwords.length)].toUpperCase();
     print(targetWord);
+  }
+
+  inputLetter(String letter) {
+    if (count < lettersPerRow) {
+      rowInputs.add(letter);
+      count++;
+      print(rowInputs);
+    }
   }
 }
