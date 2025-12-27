@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart' as words;
+import 'package:flutter/services.dart';
 import 'package:wordle/wordle.dart';
 
 class HurdleProvider extends ChangeNotifier {
@@ -13,6 +14,10 @@ class HurdleProvider extends ChangeNotifier {
   int count = 0;
   int index=0;
   final lettersPerRow = 5;
+  bool wins=false;
+
+  get shouldCheckForAnswer => rowInputs.length==lettersPerRow;
+
   init() {
     //Retrieving words only with 5 characters
     totalwords = words.all.where((element) => element.length == 5).toList();
@@ -30,7 +35,7 @@ class HurdleProvider extends ChangeNotifier {
     print(targetWord);
   }
 
-  bool get isAValidWord => totalwords.contains(rowInputs.join('').toLowerCase());
+  bool get isAValidWord => targetWord.contains(rowInputs.join('').toUpperCase());
 
 
   inputLetter(String letter) {
@@ -55,4 +60,13 @@ class HurdleProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void checkAnswer(){
+    final input = rowInputs.join('');
+    if(targetWord==input){
+      wins=true;
+    }
+  }
+
+
 }

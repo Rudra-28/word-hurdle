@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wordle/helper_function.dart';
 import 'package:wordle/hurdleprovider.dart';
 import 'package:wordle/keyboard_view.dart';
 import 'package:wordle/wordle.dart';
@@ -69,15 +70,32 @@ class _HomePageState extends State<HomePage> {
                   builder: (context, provider, child) => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      ElevatedButton(onPressed: (){
-                        provider.deleteLetter();
-                      }, child:const Text("DELETE")),
-                      ElevatedButton(onPressed: (){
-                        if(!provider.isAValidWord){
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Not a Word in my Dictionary")));
-                          return;
-                        }
-                      }, child:const Text("SUBMIT"))
+                      ElevatedButton(
+                        onPressed: () {
+                          provider.deleteLetter();
+                        },
+                        child: const Text("DELETE"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (!provider.isAValidWord) {
+                            showMsg(context, 'Not a word in our Dictionary');
+                            return;
+                          }
+                          if(provider.shouldCheckForAnswer){
+                            provider.checkAnswer();
+                    
+                          }
+                          if(provider.wins){
+                            showResult(context: context, title: 'You Win!!!', body: 'The word was ${provider.targetWord}', onPlayAgain: (){
+
+                            }, onCancel: (){
+                              
+                            });
+                          }
+                        },
+                        child: const Text("SUBMIT"),
+                      ),
                     ],
                   ),
                 ),
