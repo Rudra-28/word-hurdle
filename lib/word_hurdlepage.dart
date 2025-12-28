@@ -88,9 +88,9 @@ class _HomePageState extends State<HomePage> {
                           }
                           if(provider.wins){
                             showResult(context: context, title: 'You Win!!!', body: 'The word was ${provider.targetWord}', onPlayAgain: (){
-
-                            }, onCancel: (){
                               
+                            }, onCancel: (){
+
                             });
                           }
                         },

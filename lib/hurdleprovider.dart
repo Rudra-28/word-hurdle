@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart' as words;
-import 'package:flutter/services.dart';
 import 'package:wordle/wordle.dart';
 
 class HurdleProvider extends ChangeNotifier {
@@ -14,6 +13,8 @@ class HurdleProvider extends ChangeNotifier {
   int count = 0;
   int index=0;
   final lettersPerRow = 5;
+  final totalAttempts=6;
+  int attempts=0;
   bool wins=false;
 
   get shouldCheckForAnswer => rowInputs.length==lettersPerRow;
@@ -65,8 +66,29 @@ class HurdleProvider extends ChangeNotifier {
     final input = rowInputs.join('');
     if(targetWord==input){
       wins=true;
+    }else{
+      _markletterOnBoard();
+      if(attempts<totalAttempts){
+        _goToNextRow();
+      }
     }
   }
 
+  void _markletterOnBoard(){
+    for(int i=0;i<hurldeBoard.length; i++){
+      if(hurldeBoard[i].letter.isNotEmpty && targetWord.contains(hurldeBoard[i].letter)){
+        hurldeBoard[i].existingInTarget=true;
+      } else if(hurldeBoard[i].letter.isNotEmpty && !targetWord.contains(hurldeBoard[i].letter)){
+        hurldeBoard[i].doesNotExistInTarget=true;
+        excludedLetters.add(hurldeBoard[i].letter);
+      }
+    }
+  }
+
+  void _goToNextRow(){
+    attempts++;
+    count=0;
+    rowInputs.clear();
+  }
 
 }
