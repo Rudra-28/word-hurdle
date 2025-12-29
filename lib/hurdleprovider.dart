@@ -15,9 +15,12 @@ class HurdleProvider extends ChangeNotifier {
   final lettersPerRow = 5;
   final totalAttempts=6;
   int attempts=0;
+
   bool wins=false;
 
   get shouldCheckForAnswer => rowInputs.length==lettersPerRow;
+
+  bool get noAttemptsLeft => attempts==totalAttempts;
 
   init() {
     //Retrieving words only with 5 characters
@@ -90,6 +93,20 @@ class HurdleProvider extends ChangeNotifier {
     attempts++;
     count=0;
     rowInputs.clear();
+  }
+
+  reset(){
+    count=0;
+    index=0;
+    rowInputs.clear();
+    hurldeBoard.clear();
+    excludedLetters.clear();
+    attempts=0;
+    wins=false;
+    targetWord='';
+    generateBoard();
+    generateRandomWord();
+    notifyListeners();
   }
 
 }

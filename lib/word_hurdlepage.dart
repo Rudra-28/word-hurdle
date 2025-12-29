@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                         child: const Text("DELETE"),
                       ),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: provider.count==5 ? () {
                           if (!provider.isAValidWord) {
                             showMsg(context, 'Wrong Word, Please try again');
                             return;
@@ -87,13 +87,22 @@ class _HomePageState extends State<HomePage> {
                           }
                           if(provider.wins){
                             provider.markletterOnBoard;
-                            showResult(context: context, title: 'You Win!!!', body: 'The word was ${provider.targetWord}', onPlayAgain: (){
-                              
+                            showResult(context: context, title: 'You Win!!!', body: 'The word was ${provider.targetWord}', 
+                            onPlayAgain: (){
+                              Navigator.pop(context);
+                              provider.reset();
                             }, onCancel: (){
-
+                              Navigator.pop(context);
+                              provider.reset();
                             });
                           }
-                        },
+                          else if(provider.noAttemptsLeft){
+                            showResult(context: context, title: 'You Lost', body: 'The Word is ${provider.targetWord}', onPlayAgain: (){Navigator.pop(context);
+                              provider.reset();}, onCancel:(){
+                                Navigator.pop(context);
+                              });
+                          }
+                        }: null,
                         child: const Text("SUBMIT"),
                       ),
                     ],
