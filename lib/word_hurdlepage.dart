@@ -79,14 +79,14 @@ class _HomePageState extends State<HomePage> {
                       ElevatedButton(
                         onPressed: () {
                           if (!provider.isAValidWord) {
-                            showMsg(context, 'Not a word in our Dictionary');
+                            showMsg(context, 'Wrong Word, Please try again');
                             return;
                           }
                           if(provider.shouldCheckForAnswer){
                             provider.checkAnswer();
-                    
                           }
                           if(provider.wins){
+                            provider.markletterOnBoard;
                             showResult(context: context, title: 'You Win!!!', body: 'The word was ${provider.targetWord}', onPlayAgain: (){
                               
                             }, onCancel: (){

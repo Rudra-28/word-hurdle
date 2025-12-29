@@ -36,7 +36,7 @@ class HurdleProvider extends ChangeNotifier {
     print(targetWord);
   }
 
-  bool get isAValidWord => targetWord.contains(rowInputs.join('').toUpperCase());
+  bool get isAValidWord => totalwords.contains(rowInputs.join('').toLowerCase());
 
 
   inputLetter(String letter) {
@@ -67,14 +67,14 @@ class HurdleProvider extends ChangeNotifier {
     if(targetWord==input){
       wins=true;
     }else{
-      _markletterOnBoard();
+      markletterOnBoard();
       if(attempts<totalAttempts){
         _goToNextRow();
       }
     }
   }
 
-  void _markletterOnBoard(){
+  void markletterOnBoard(){
     for(int i=0;i<hurldeBoard.length; i++){
       if(hurldeBoard[i].letter.isNotEmpty && targetWord.contains(hurldeBoard[i].letter)){
         hurldeBoard[i].existingInTarget=true;
@@ -83,6 +83,7 @@ class HurdleProvider extends ChangeNotifier {
         excludedLetters.add(hurldeBoard[i].letter);
       }
     }
+    notifyListeners();
   }
 
   void _goToNextRow(){
